@@ -18,8 +18,9 @@ allprojects {
 }
 
 def apiProject = project(':baemin-api')
+def infraProject = project(':baemin-infra')
 
-def allProjects = [apiProject]
+def allProjects = [apiProject, infraProject]
 configure(allProjects) {
     configurations {
         compileOnly {
@@ -33,7 +34,7 @@ configure(allProjects) {
     }
 }
 
-def springProjects = [apiProject]
+def springProjects = [apiProject, infraProject]
 configure(springProjects) {
     apply plugin: 'org.springframework.boot'
     apply plugin: 'io.spring.dependency-management'
@@ -46,9 +47,9 @@ configure(webProjects) {
     }
 }
 
-def jpaProjects = [apiProject]
+def jpaProjects = [infraProject]
 configure(jpaProjects) {
     dependencies {
-
+        implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     }
 }

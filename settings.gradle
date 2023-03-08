@@ -1,2 +1,3 @@
 rootProject.name = 'baemin-expect'
 include('baemin-api')
+include('baemin-infra')
