@@ -17,19 +17,38 @@ allprojects {
     }
 }
 
-def api = project(':api')
+def apiProject = project(':baemin-api')
 
-def springProjects = [api]
-configure(springProjects) {
-    apply plugin: 'org.springframework.boot'
-    apply plugin: 'io.spring.dependency-management'
+def allProjects = [apiProject]
+configure(allProjects) {
+    configurations {
+        compileOnly {
+            extendsFrom annotationProcessor
+        }
+    }
 
     dependencies {
+        compileOnly 'org.projectlombok:lombok'
+        annotationProcessor 'org.projectlombok:lombok'
     }
 }
 
-def webProjects = [api]
+def springProjects = [apiProject]
+configure(springProjects) {
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+}
+
+def webProjects = [apiProject]
 configure(webProjects) {
     dependencies {
+        implementation 'org.springframework.boot:spring-boot-starter-web'
+    }
+}
+
+def jpaProjects = [apiProject]
+configure(jpaProjects) {
+    dependencies {
+
     }
 }
