@@ -1,0 +1,9 @@
+spring:
+  datasource:
+    baemin-expect:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      username: baemin-app
+      jdbc-url: jdbc:mysql://:3306/KPOP?useUnicode=true&characterEncoding=utf8&useSSL=true&serverTimezone=Asia/Seoul
+      type: com.zaxxer.hikari.HikariDataSource
+      password: a$rMSmSxpqE&
+      pool-size: 10
