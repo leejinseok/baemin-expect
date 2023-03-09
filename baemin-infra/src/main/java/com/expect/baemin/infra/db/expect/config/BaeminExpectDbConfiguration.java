@@ -6,8 +6,6 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -35,24 +33,19 @@ import static com.expect.baemin.infra.db.expect.BaeminExpectDbConstants.*;
 )
 public class BaeminExpectDbConfiguration {
 
-//    private final BaeminExpectDbPropertyBinder baeminExpectDbPropertyBinder;
+    private final BaeminExpectDbPropertyBinder baeminExpectDbPropertyBinder;
     private final Environment env;
 
     @Primary
     @Bean
-    @ConfigurationProperties("spring.datasource.baemin-expect")
     public DataSource baeminExpectDataSource() {
-//        HikariConfig hikariConfig = new HikariConfig();
-//        hikariConfig.setUsername(baeminExpectDbPropertyBinder.getUsername());
-//        hikariConfig.setPassword(baeminExpectDbPropertyBinder.getPassword());
-//        hikariConfig.setJdbcUrl(baeminExpectDbPropertyBinder.getJdbcUrl());
-//        hikariConfig.setMaximumPoolSize(baeminExpectDbPropertyBinder.getPoolSize());
-////        hikariConfig.setDriverClassName(baeminExpectDbPropertyBinder.getDriverClassName());
-//        return new HikariDataSource(hikariConfig);
-
-        return DataSourceBuilder.create()
-                .type(HikariDataSource.class)
-                .build();
+        HikariConfig hikariConfig = new HikariConfig();
+        hikariConfig.setJdbcUrl(baeminExpectDbPropertyBinder.getJdbcUrl());
+        hikariConfig.setUsername(baeminExpectDbPropertyBinder.getUsername());
+        hikariConfig.setPassword(baeminExpectDbPropertyBinder.getPassword());
+        hikariConfig.setDriverClassName(baeminExpectDbPropertyBinder.getDriverClassName());
+        hikariConfig.setMaximumPoolSize(baeminExpectDbPropertyBinder.getPoolSize());
+        return new HikariDataSource(hikariConfig);
     }
 
     @Primary
@@ -60,21 +53,21 @@ public class BaeminExpectDbConfiguration {
     public LocalContainerEntityManagerFactoryBean baeminExpectEntityManager(
             @Qualifier(DATA_SOURCE) DataSource dataSource
     ) {
-        LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
-        em.setDataSource(dataSource);
-        em.setPackagesToScan(PACKAGES_TO_SCAN);
-        em.setPersistenceUnitName(PERSISTENCE_UNIT_NAME);
+        LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
+        entityManagerFactoryBean.setDataSource(dataSource);
+        entityManagerFactoryBean.setPackagesToScan(PACKAGES_TO_SCAN);
+        entityManagerFactoryBean.setPersistenceUnitName(PERSISTENCE_UNIT_NAME);
 
-        HibernateJpaVendorAdapter vendorAdapter = new HibernateJpaVendorAdapter();
-        em.setJpaVendorAdapter(vendorAdapter);
+        HibernateJpaVendorAdapter jpaVendorAdapter = new HibernateJpaVendorAdapter();
+        entityManagerFactoryBean.setJpaVendorAdapter(jpaVendorAdapter);
 
         Map<String, Object> properties = new HashMap<>();
         properties.put("hibernate.show_sql", env.getProperty("spring.jpa.properties.hibernate.show_sql"));
         properties.put("hibernate.format_sql", env.getProperty("spring.jpa.properties.hibernate.format_sql"));
         properties.put("hibernate.physical_naming_strategy", "org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy");
         properties.put("hibernate.hbm2ddl.auto", env.getProperty("spring.jpa.properties.hibernate.ddl-auto"));
-        em.setJpaPropertyMap(properties);
-        return em;
+        entityManagerFactoryBean.setJpaPropertyMap(properties);
+        return entityManagerFactoryBean;
     }
 
     @Primary

@@ -1,10 +1,16 @@
 spring:
   datasource:
     baemin-expect:
-      driver-class-name: com.mysql.cj.jdbc.Driver
-      username: baemin-app
       jdbc-url: jdbc:mysql://ec2-3-35-47-230.ap-northeast-2.compute.amazonaws.com:3306/baemin-expect?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Seoul
-      type: com.zaxxer.hikari.HikariDataSource
+      username: baemin-app
       password: a$rMSmSxpqE&
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      type: com.zaxxer.hikari.HikariDataSource
       pool-size: 10
-    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+        ddl_auto: validate
+    generate-ddl: false
