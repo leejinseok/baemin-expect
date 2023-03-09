@@ -10,11 +10,10 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version "${springVersion}"
     id 'io.spring.dependency-management' version '1.1.0'
-    id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
 }
 
 allprojects {
-    apply plugin: 'application'
+    apply(plugin: 'application')
 
     repositories {
         mavenCentral()
@@ -47,6 +46,10 @@ configure(allProjects) {
         compileOnly 'org.projectlombok:lombok'
         annotationProcessor 'org.projectlombok:lombok'
     }
+
+    tasks.named('test') {
+        useJUnitPlatform()
+    }
 }
 
 /**
@@ -57,10 +60,11 @@ def springProjects = [
         infraProject
 ]
 configure(springProjects) {
-    apply plugin: 'org.springframework.boot'
-    apply plugin: 'io.spring.dependency-management'
+    apply(plugin: 'org.springframework.boot')
+    apply(plugin: 'io.spring.dependency-management')
 
     dependencies {
+        implementation 'org.springframework.boot:spring-boot-starter'
         annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
     }
 }
@@ -80,15 +84,18 @@ configure(webProjects) {
  */
 def jpaProjects = [apiProject, infraProject]
 configure(jpaProjects) {
-    apply plugin: 'com.ewerk.gradle.plugins.querydsl'
 
     dependencies {
         implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
         implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
 
-        // querydsl
+        // Querydsl 의존성 추가
         implementation "com.querydsl:querydsl-jpa:${queryDslVersion}:jakarta"
-        annotationProcessor "com.querydsl:querydsl-apt:${queryDslVersion}:jakarta"
+        annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jakarta"
+
+        // java.lang.NoClassDefFoundError 대응을 위해 추가
+        annotationProcessor 'jakarta.annotation:jakarta.annotation-api'
+        annotationProcessor 'jakarta.persistence:jakarta.persistence-api'
 
         runtimeOnly 'com.mysql:mysql-connector-j'
     }
