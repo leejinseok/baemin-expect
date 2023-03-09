@@ -1,27 +1,41 @@
+buildscript {
+    ext {
+        springVersion = "3.0.4"
+        queryDslVersion = "5.0.0"
+    }
+}
+
 plugins {
     id 'application'
     id 'java'
-    id 'org.springframework.boot' version '3.0.4'
+    id 'org.springframework.boot' version "${springVersion}"
     id 'io.spring.dependency-management' version '1.1.0'
 }
 
 allprojects {
     apply plugin: 'application'
 
-    group "com.expect.baemin"
-    version = '0.0.1-SNAPSHOT'
-    sourceCompatibility = '17'
-
     repositories {
         mavenCentral()
     }
+
+    group "com.expect.baemin"
+    version = '0.0.1-SNAPSHOT'
+    sourceCompatibility = '17'
 }
 
 def apiProject = project(':baemin-api')
 def infraProject = project(':baemin-infra')
 
-def allProjects = [apiProject, infraProject]
+/**
+ * 프로젝트 전체 설정
+ */
+def allProjects = [
+        apiProject,
+        infraProject
+]
 configure(allProjects) {
+
     configurations {
         compileOnly {
             extendsFrom annotationProcessor
@@ -34,12 +48,25 @@ configure(allProjects) {
     }
 }
 
-def springProjects = [apiProject, infraProject]
+/**
+ * 스프링 관련 프로젝트 설정
+ */
+def springProjects = [
+        apiProject,
+        infraProject
+]
 configure(springProjects) {
     apply plugin: 'org.springframework.boot'
     apply plugin: 'io.spring.dependency-management'
+
+    dependencies {
+        annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
+    }
 }
 
+/**
+ * 웹 관련 프로젝트 설정
+ */
 def webProjects = [apiProject]
 configure(webProjects) {
     dependencies {
@@ -47,9 +74,22 @@ configure(webProjects) {
     }
 }
 
+/**
+ * jpa 관련 프로젝트 설정
+ */
 def jpaProjects = [infraProject]
 configure(jpaProjects) {
     dependencies {
         implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+        implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+
+        // QueryDSL
+        implementation("com.querydsl:querydsl-jpa:${queryDslVersion}")
+        implementation("com.querydsl:querydsl-core:${queryDslVersion}")
+        annotationProcessor("com.querydsl:querydsl-apt:${queryDslVersion}:jpa")
+        annotationProcessor("jakarta.persistence:jakarta.persistence-api")
+        annotationProcessor("jakarta.annotation:jakarta.annotation-api")
+
+        runtimeOnly 'com.mysql:mysql-connector-j'
     }
 }

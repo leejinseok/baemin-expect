@@ -7,8 +7,8 @@ import org.springframework.context.annotation.Configuration;
 
 @Getter
 @Setter
-@Configuration
-@ConfigurationProperties(prefix="spring.datasource.baemin-expect")
+//@Configuration
+//@ConfigurationProperties(prefix="spring.datasource.baemin-expect")
 public class BaeminExpectDbPropertyBinder {
 
     private String driverClassName;

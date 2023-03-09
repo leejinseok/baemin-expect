@@ -6,6 +6,8 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -33,17 +35,24 @@ import static com.expect.baemin.infra.db.expect.BaeminExpectDbConstants.*;
 )
 public class BaeminExpectDbConfiguration {
 
-    private final BaeminExpectDbPropertyBinder baeminExpectDbPropertyBinder;
+//    private final BaeminExpectDbPropertyBinder baeminExpectDbPropertyBinder;
     private final Environment env;
 
+    @Primary
     @Bean
+    @ConfigurationProperties("spring.datasource.baemin-expect")
     public DataSource baeminExpectDataSource() {
-        HikariConfig hikariConfig = new HikariConfig();
-        hikariConfig.setUsername(baeminExpectDbPropertyBinder.getUsername());
-        hikariConfig.setPassword(baeminExpectDbPropertyBinder.getPassword());
-        hikariConfig.setJdbcUrl(baeminExpectDbPropertyBinder.getJdbcUrl());
-        hikariConfig.setMaximumPoolSize(baeminExpectDbPropertyBinder.getPoolSize());
-        return new HikariDataSource(hikariConfig);
+//        HikariConfig hikariConfig = new HikariConfig();
+//        hikariConfig.setUsername(baeminExpectDbPropertyBinder.getUsername());
+//        hikariConfig.setPassword(baeminExpectDbPropertyBinder.getPassword());
+//        hikariConfig.setJdbcUrl(baeminExpectDbPropertyBinder.getJdbcUrl());
+//        hikariConfig.setMaximumPoolSize(baeminExpectDbPropertyBinder.getPoolSize());
+////        hikariConfig.setDriverClassName(baeminExpectDbPropertyBinder.getDriverClassName());
+//        return new HikariDataSource(hikariConfig);
+
+        return DataSourceBuilder.create()
+                .type(HikariDataSource.class)
+                .build();
     }
 
     @Primary
