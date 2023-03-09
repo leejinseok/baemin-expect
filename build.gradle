@@ -78,7 +78,7 @@ configure(webProjects) {
 /**
  * jpa 관련 프로젝트 설정
  */
-def jpaProjects = [infraProject]
+def jpaProjects = [apiProject, infraProject]
 configure(jpaProjects) {
     apply plugin: 'com.ewerk.gradle.plugins.querydsl'
 

@@ -18,4 +18,6 @@ public class BaeminExpectQueryDslConfiguration {
         return new JPAQueryFactory(baeminExpectEntityManager);
     }
 
+
+
 }

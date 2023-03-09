@@ -78,5 +78,5 @@ public class BaeminExpectDbConfiguration {
         transactionManager.setEntityManagerFactory(entityManagerFactoryBean.getObject());
         return transactionManager;
     }
-
+    
 }
