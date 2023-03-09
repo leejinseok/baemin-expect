@@ -36,7 +36,6 @@ public class BaeminExpectDbConfiguration {
     private final BaeminExpectDbPropertyBinder baeminExpectDbPropertyBinder;
     private final Environment env;
 
-    @Primary
     @Bean
     public DataSource baeminExpectDataSource() {
         HikariConfig hikariConfig = new HikariConfig();

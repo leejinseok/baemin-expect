@@ -10,6 +10,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version "${springVersion}"
     id 'io.spring.dependency-management' version '1.1.0'
+    id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
 }
 
 allprojects {
@@ -79,16 +80,15 @@ configure(webProjects) {
  */
 def jpaProjects = [infraProject]
 configure(jpaProjects) {
+    apply plugin: 'com.ewerk.gradle.plugins.querydsl'
+
     dependencies {
         implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
         implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
 
-        // QueryDSL
-        implementation("com.querydsl:querydsl-jpa:${queryDslVersion}")
-        implementation("com.querydsl:querydsl-core:${queryDslVersion}")
-        annotationProcessor("com.querydsl:querydsl-apt:${queryDslVersion}:jpa")
-        annotationProcessor("jakarta.persistence:jakarta.persistence-api")
-        annotationProcessor("jakarta.annotation:jakarta.annotation-api")
+        // querydsl
+        implementation "com.querydsl:querydsl-jpa:${queryDslVersion}:jakarta"
+        annotationProcessor "com.querydsl:querydsl-apt:${queryDslVersion}:jakarta"
 
         runtimeOnly 'com.mysql:mysql-connector-j'
     }
