@@ -19,10 +19,10 @@ public class BaeminExpectDbBaseTimeEntity {
 
     @CreatedDate
     @Column(updatable = false, columnDefinition = "datetime")
-    private LocalDateTime createdAt;
+    private LocalDateTime createdDateTime;
 
     @LastModifiedDate
     @Column(columnDefinition = "datetime")
-    private LocalDateTime updatedAt;
+    private LocalDateTime updatedDateTime;
 
 }

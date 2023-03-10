@@ -1,12 +1,14 @@
-package com.expect.baemin.infra.db.expect.domain.member;
+package com.expect.baemin.infra.db.expect.domain.member.address;
 
+import com.expect.baemin.infra.db.expect.BaeminExpectDbBaseTimeEntity;
+import com.expect.baemin.infra.db.expect.domain.member.MemberEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 
 @Getter
 @Entity
 @Table(name = "member_delivery_address")
-public class MemberDeliveryAddressEntity {
+public class MemberDeliveryAddressEntity extends BaeminExpectDbBaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
