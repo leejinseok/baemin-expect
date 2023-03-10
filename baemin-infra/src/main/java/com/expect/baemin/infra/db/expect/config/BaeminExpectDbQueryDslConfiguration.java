@@ -7,19 +7,18 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import static com.expect.baemin.infra.db.expect.BaeminExpectDbConstants.ENTITY_MANAGER;
-import static com.expect.baemin.infra.db.expect.BaeminExpectDbConstants.JPA_QUERY_FACTORY;
+import static com.expect.baemin.infra.db.expect.BaeminExpectDbConstants.PERSISTENCE_UNIT_NAME;
 
 
 @Configuration
 @RequiredArgsConstructor
 public class BaeminExpectDbQueryDslConfiguration {
 
-    @PersistenceContext(name = ENTITY_MANAGER)
+    @PersistenceContext(unitName = PERSISTENCE_UNIT_NAME)
     private final EntityManager entityManager;
 
-    @Bean(name = JPA_QUERY_FACTORY)
-    public JPAQueryFactory jpaQueryFactory() {
+    @Bean
+    public JPAQueryFactory baeminExpectJpaQueryFactory() {
         return new JPAQueryFactory(entityManager);
     }
 
