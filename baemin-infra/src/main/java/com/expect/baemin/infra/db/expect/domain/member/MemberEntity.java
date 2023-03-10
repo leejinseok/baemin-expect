@@ -19,8 +19,7 @@ public class MemberEntity {
     @Column(columnDefinition = "varchar(50)")
     private String nickname;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "member")
     private List<MemberDeliveryAddressEntity> deliveryAddresses = new ArrayList<>();
-
 
 }

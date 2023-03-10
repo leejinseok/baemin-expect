@@ -1,7 +1,7 @@
 package com.expect.baemin.infra.db.expect.config;
 
 import com.expect.baemin.infra.db.expect.BaeminExpectDbPropertyBinder;
-import com.expect.baemin.infra.db.expect.domain.BaeminExpectDomain;
+import com.expect.baemin.infra.db.expect.domain.BaeminExpectDbDomain;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +27,7 @@ import static com.expect.baemin.infra.db.expect.BaeminExpectDbConstants.*;
 @RequiredArgsConstructor
 @EnableTransactionManagement
 @EnableJpaRepositories(
-        basePackageClasses = BaeminExpectDomain.class,
+        basePackageClasses = BaeminExpectDbDomain.class,
         entityManagerFactoryRef = ENTITY_MANAGER,
         transactionManagerRef = TRANSACTION_MANAGER
 )
@@ -36,8 +36,8 @@ public class BaeminExpectDbConfiguration {
     private final BaeminExpectDbPropertyBinder baeminExpectDbPropertyBinder;
     private final Environment env;
 
-    @Bean
-    public DataSource baeminExpectDataSource() {
+    @Bean(name = DATA_SOURCE)
+    public DataSource dataSource() {
         HikariConfig hikariConfig = new HikariConfig();
         hikariConfig.setJdbcUrl(baeminExpectDbPropertyBinder.getJdbcUrl());
         hikariConfig.setUsername(baeminExpectDbPropertyBinder.getUsername());
@@ -48,8 +48,8 @@ public class BaeminExpectDbConfiguration {
     }
 
     @Primary
-    @Bean
-    public LocalContainerEntityManagerFactoryBean baeminExpectEntityManager(
+    @Bean(name = ENTITY_MANAGER)
+    public LocalContainerEntityManagerFactoryBean entityManager(
             @Qualifier(DATA_SOURCE) DataSource dataSource
     ) {
         LocalContainerEntityManagerFactoryBean entityManagerFactoryBean = new LocalContainerEntityManagerFactoryBean();
@@ -70,8 +70,8 @@ public class BaeminExpectDbConfiguration {
     }
 
     @Primary
-    @Bean
-    public PlatformTransactionManager baeminExpectTransactionManager(
+    @Bean(name = TRANSACTION_MANAGER)
+    public PlatformTransactionManager transactionManager(
             @Qualifier(ENTITY_MANAGER) LocalContainerEntityManagerFactoryBean entityManagerFactoryBean
     ) {
         JpaTransactionManager transactionManager = new JpaTransactionManager();
