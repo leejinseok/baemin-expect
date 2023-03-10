@@ -82,7 +82,7 @@ configure(webProjects) {
 /**
  * jpa 관련 프로젝트 설정
  */
-def jpaProjects = [apiProject, infraProject]
+def jpaProjects = [infraProject]
 configure(jpaProjects) {
 
     dependencies {
