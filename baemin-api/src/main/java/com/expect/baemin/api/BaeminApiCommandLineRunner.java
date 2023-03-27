@@ -16,7 +16,8 @@ public class BaeminApiCommandLineRunner implements CommandLineRunner {
     @Transactional
     @Override
     public void run(String... args) throws Exception {
-        MemberEntity member1 = MemberEntity.create("둘리");
-        memberRepository.save(member1);
+//        MemberEntity member1 = MemberEntity.create("둘리");
+//        memberRepository.save(member1);
     }
+
 }
